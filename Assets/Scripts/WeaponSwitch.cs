@@ -12,37 +12,41 @@ public enum WeaponState
 }
 public class WeaponSwitch : MonoBehaviour
 {
+    [Header("Unarmed = Element 0 \n" + 
+        "Hitscan = Element 1 \n" +
+        "Projectile = Element 2")]
     public Weapon[] AvailableWeapons = new Weapon[(int)WeaponState.Total];
     public Weapon CurrentWeapon = null;
 
     public float ScrollWheelBreakpoint = 1f;
     private float ScrollWheelDelta = 0f;
-    
+
 
     public void Update()
     {
         HandleWeaponSwap();
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonUp(0) && CurrentWeapon != null)
         {
-            FireHeldWeapon();
+            CurrentWeapon.Fire();
         }
     }
 
     private void HandleWeaponSwap()
     {
+
         ScrollWheelDelta += Input.mouseScrollDelta.y;
         if (Mathf.Abs(ScrollWheelDelta) > ScrollWheelBreakpoint)
         {
-            int swapDirectionNumber = (int)Mathf.Sign(ScrollWheelDelta);
-            ScrollWheelDelta -= Mathf.Sign(ScrollWheelDelta) * ScrollWheelBreakpoint;
+            int swapDirection = (int)Mathf.Sign(ScrollWheelDelta);
+            ScrollWheelDelta = 0.0f;
 
             int currentWeaponIndex = (int)CurrentWeapon.WeaponType;
-            currentWeaponIndex += swapDirectionNumber;
+            currentWeaponIndex += swapDirection;
 
             if (currentWeaponIndex < 0)
             {
-                currentWeaponIndex = (int)WeaponState.Total + currentWeaponIndex;
+                currentWeaponIndex = (int)WeaponState.Total + -1;
             }
             if (currentWeaponIndex >= (int)WeaponState.Total)
             {
@@ -51,7 +55,6 @@ public class WeaponSwitch : MonoBehaviour
             WeaponSwapAnimation(currentWeaponIndex);
         }
     }
-
     private void WeaponSwapAnimation(int currentWeaponIndex)
     {
         CurrentWeapon.gameObject.SetActive(false);
@@ -59,11 +62,4 @@ public class WeaponSwitch : MonoBehaviour
         CurrentWeapon.gameObject.SetActive(true);
     }
 
-    public void FireHeldWeapon()
-    {
-        if(CurrentWeapon != null)
-        {
-            CurrentWeapon.Fire();
-        }
-    }
 }

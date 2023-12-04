@@ -6,6 +6,11 @@ public class HitScanWeapon : Weapon
 {
     public ParticleSystem HitParticle = null;
     
+    protected new void Start()
+    {
+        HitParticle.gameObject.SetActive(false);
+        base.Start();
+    }
 
     public override bool Fire()
     {
@@ -13,19 +18,32 @@ public class HitScanWeapon : Weapon
         {
             return false;
         }
-        HitScan();
+        HitScanFire();
         return true;
     }
 
-    private void HitScan()
+    private void HitScanFire()
     {
-        Ray weaponRay = new Ray(CameraController.myCamera.transform.position, CameraController.myCamera.transform.forward);
-        RaycastHit hit = new RaycastHit();
-        if (Physics.Raycast(weaponRay, out hit, WeaponRange, HitMask))
+        HitParticle.gameObject.SetActive(false);
+
+        Ray weaponRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        RaycastHit hit = new();
+
+        if (Physics.Raycast(weaponRay, out hit, WeaponRange, ~IgnoreHitMask))
         {
             HitParticle.transform.position = hit.point;
-            HitParticle.Play();
-            //DoHitStuff()
+            HitParticle.gameObject.SetActive(true);
+
+            HandleEntityHit(hit);
+        }
+    }
+
+    private static void HandleEntityHit(RaycastHit hit)
+    {
+        var PlayerHit = hit.transform.gameObject.GetComponent<PlayerMovement>();
+        if (PlayerHit != null)
+        {
+            //DOHitStuff()
         }
     }
 }

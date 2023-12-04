@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     public GameObject DetonationObject = null;
     
     public float DetonationLifeTime = 1.0f;
-    private float DetonationTime = -1.0f;
+    protected float DetonationTime = -1.0f;
     
     protected Vector3 SpawnPosition = new Vector3();
     protected Vector3 AimPosition = new Vector3();

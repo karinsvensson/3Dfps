@@ -11,6 +11,10 @@ public class Rocket : Projectile
     public override void Update()
     {
         base.Update();
+        if (DetonationTime > 0)
+        {
+            return;
+        }
         transform.position += AimDirection.normalized * MovementSpeed * Time.deltaTime;
         
     }
