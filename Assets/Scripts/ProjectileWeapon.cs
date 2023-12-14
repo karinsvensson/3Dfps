@@ -13,8 +13,9 @@ public class ProjectileWeapon : Weapon
             return false;
         }
         Projectile firedProjectile = GameObject.Instantiate(SpawnProjectile);
-
-        firedProjectile.Init(transform.position, Camera.main.transform.forward.normalized + Camera.main.transform.position);
+        firedProjectile.transform.position = transform.position;
+        //firedProjectile.transform.rotation = transform.rotation;
+        firedProjectile.Init(transform.position, Camera.main.transform.forward.normalized * 1000.0f + Camera.main.transform.position);
 
         return true;
     }

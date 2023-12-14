@@ -20,19 +20,20 @@ public class Projectile : MonoBehaviour
         SpawnPosition = aSpawnPosition;
         AimPosition = anAimPosition;
         AimDirection = AimPosition + SpawnPosition;
-        gameObject.transform.rotation.SetLookRotation(AimDirection, transform.up);
+        gameObject.transform.LookAt(AimDirection+ SpawnPosition, transform.up);
     }
 
     public virtual void Start()
     {
+        //Debug.Log("I EXIST!");
         ProjectileObject.SetActive(true);
         DetonationObject.SetActive(false);
     }
     public virtual void Update()
     {
-        if(DetonationLifeTime > 0)
+        if(DetonationTime > 0)
         {
-            DetonationLifeTime -= Time.deltaTime;
+            DetonationTime -= Time.deltaTime;
             if(DetonationTime < 0)
             {
                 GameObject.Destroy(gameObject);
@@ -41,7 +42,7 @@ public class Projectile : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag != "Player")
+        if(collision.gameObject.tag != "Player" && collision.gameObject.tag != "Rocket")
         {
             ProjectileObject.SetActive(false);
             DetonationObject.SetActive(true);

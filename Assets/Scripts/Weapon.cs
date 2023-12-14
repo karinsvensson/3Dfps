@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public int Ammunition;
+    public int Ammunition = 1000;
     public WeaponState WeaponType = WeaponState.Total;
     
     public float WeaponRange = 100f;
